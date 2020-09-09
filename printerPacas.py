@@ -34,7 +34,7 @@ try:
     # Obtener los resultados como objetos Python
     ultima_paca = cur.fetchone()
     ultima_pacaN = ultima_paca[0]
-    time.sleep(5)
+    time.sleep(3)
     
     # Imprime el tiket
     fileP = 'C:\Users\{}\Downloads\Ticket_de_Pacas{}.pdf'.format(userM ,ultima_pacaN)
