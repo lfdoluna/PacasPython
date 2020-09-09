@@ -2,7 +2,9 @@
 Scripst para la impresión de tickets generados por la báscula de merma de forma automática
 
 Instalación librerias y programas:
+
 ********************** NOTA **********************
+
 Debe asegurarse de instalar Python contenga la función PIP, esta es necesaria para instalar las librerias necesarias de Python
 **************************************************
 
@@ -12,7 +14,9 @@ y en variable PATH editamos y seleccionaremos la ruta de instalación de Python 
 de al momento de instalar con la función PIP, no encontremos el mismo error de Python.
 
 2. Abrir una ventana CMD y ejecutamos las siguientes lineas de comando:
+
 pip install psycopg2
+
 pip install pywin32
 
 3. Asegurarse de tener instalado Chrome y Acrobat Reader(Versión Estandar)
