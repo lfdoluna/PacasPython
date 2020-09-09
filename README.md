@@ -1,12 +1,13 @@
 # PacasPython
 Scripst para la impresión de tickets generados por la báscula de merma de forma automática
 
-Instalación librerias y programas:
-
 ********************** NOTA **********************
 
 Debe asegurarse de instalar Python contenga la función PIP, esta es necesaria para instalar las librerias necesarias de Python
+
 **************************************************
+
+*******Instalación librerias y programas:*********
 
 1. Instalar  python 2.7  y abrir una ventana de CMD y escribir python, si no  se abre la terminal de Python se debe agregar al PATH. 
 Para agregarlo debemos buscar "Editar  las variables de entorno del sistema" y en la  ventana selecionaremos "Variables del entorno"
@@ -21,7 +22,8 @@ pip install pywin32
 
 3. Asegurarse de tener instalado Chrome y Acrobat Reader(Versión Estandar)
 
-Instalación Scritps:
+************Instalación Scritps:*****************
+
 1. Descargaremos y guardaremos en el directorio C:\PacasPython\
 2. Modificaremos el Script Imprime.py, en la línea XX, la variable userM, la cambiaremos por el usuario del ordenador del mismo modo
 lo realizaremos con el Script printerPacas, con la excepción que se encuentra en la línea XX
