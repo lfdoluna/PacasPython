@@ -2,15 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Sep  8 16:38:52 2020
-
-@author: pi
-"""
-
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Sep  8 10:08:40 2020
-Archivo: ImprimeTP.py
+Archivo: Imprime.py
 Comentarios: Archivo para la descarga e impresión de los tkicets
 generados por el alta de pacas de compactadora
 @author: LFLQ
@@ -21,12 +13,7 @@ import psycopg2
 import time
 import os
 
-# # Linea para mandar a imprimir
-# fileP = 'C:\Users\lfdlu\Desktop\Ticket_de_Pacas.pdf'
-# p = subprocess.Popen('"C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"  /n /s /h /t "{}" "Brother QL-800"'.format(fileP), 
-# 	stdout=subprocess.PIPE, 
-# 	shell=True)
-
+userM = 'lfdlu'
 
 # Postgres
 PSQL_HOST = "192.168.5.243"
@@ -78,9 +65,9 @@ while True:
             print '**********************'
             print ('Proximo folio: ' + str(ultima_pacaN))
             print '**********************'
-            while os.path.isfile("C:\Users\lfdlu\Downloads\Ticket_de_Pacas{}.pdf".format(ultima_pacaN))==True:
+            while os.path.isfile("C:\Users\{}\Downloads\Ticket_de_Pacas{}.pdf".format(userM, ultima_pacaN))==True:
                 print 'No'
-            fileP = 'C:\Users\lfdlu\Downloads\Ticket_de_Pacas{}.pdf'.format(ultima_pacaN)
+            fileP = 'C:\Users\{}\Downloads\Ticket_de_Pacas{}.pdf'.format(userM, ultima_pacaN)
             subprocess.call('python c:\PacasPython\printerPacas.py')
             prox_folioN = ultima_pacaN + 1
 
