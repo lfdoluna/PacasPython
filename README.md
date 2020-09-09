@@ -7,7 +7,7 @@ Debe asegurarse de instalar Python contenga la función PIP, esta es necesaria p
 
 **************************************************
 
-*Instalación librerias y programas:*
+**Instalación librerias y programas:**
 
 1. Instalar  python 2.7  y abrir una ventana de CMD y escribir python, si no  se abre la terminal de Python se debe agregar al PATH. 
 Para agregarlo debemos buscar "Editar  las variables de entorno del sistema" y en la  ventana selecionaremos "Variables del entorno"
@@ -16,14 +16,18 @@ de al momento de instalar con la función PIP, no encontremos el mismo error de 
 
 2. Abrir una ventana CMD y ejecutamos las siguientes lineas de comando:
 
-pip install psycopg2
+* *pip install psycopg2*
 
-pip install pywin32
+* *pip install pywin32*
 
 3. Asegurarse de tener instalado Chrome y Acrobat Reader(Versión Estandar)
 
-*Instalación Scritps:*
+**Instalación Scritps:**
 
 1. Descargaremos y guardaremos en el directorio C:\PacasPython\
 2. Modificaremos el Script Imprime.py, en la línea XX, la variable userM, la cambiaremos por el usuario del ordenador del mismo modo
 lo realizaremos con el Script printerPacas, con la excepción que se encuentra en la línea XX
+3. Para iniciar el script durante el arranque debemos abrir una terminal de  windows (CMD), como administrador. Después escribiremos
+lo siguiente:
+
+* *python "c:\PacasPython\agrega a inicio.py"*
