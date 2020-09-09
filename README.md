@@ -25,8 +25,8 @@ de al momento de instalar con la función PIP, no encontremos el mismo error de 
 **Instalación Scritps:**
 
 1. Descargaremos y guardaremos en el directorio C:\PacasPython\
-2. Modificaremos el Script Imprime.py, en la línea XX, la variable userM, la cambiaremos por el usuario del ordenador del mismo modo
-lo realizaremos con el Script printerPacas, con la excepción que se encuentra en la línea XX
+2. Modificaremos el Script **Imprime.py**, en la *línea 16*, la variable **userM**, la cambiaremos por el usuario del ordenador del mismo modo
+lo realizaremos con el Script **printerPacas.py**, con la excepción que se encuentra en la *línea 15*
 3. Para iniciar el script durante el arranque debemos abrir una terminal de  windows (CMD), como administrador. Después escribiremos
 lo siguiente:
 
