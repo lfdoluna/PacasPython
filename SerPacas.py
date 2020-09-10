@@ -23,6 +23,7 @@ class SerPacas(object):
 
 		# Inicialización variables
 		horaStart = datetime.now()
+		self.manana = horaStart.day + 1
 		horaStart = horaStart.strftime('%H:%M:%S')
 		self.master = maestro
 		self.userM = user
@@ -61,7 +62,7 @@ class SerPacas(object):
 		ahoraC = ahora.strftime('%H:%M:%S')
 		sqlquery = "SELECT max(id_paca) AS ultima_paca FROM pacas;"
 		self.actual_folio = self.ConsultaDB(sqlquery)
-		print self.actual_folio[0]
+		#print self.actual_folio[0]
 		self.varHorPStr.set(ahoraC)
 		if self.actual_folio[0] == self.prox_folioN:
 			ahor = datetime.now()
@@ -77,6 +78,7 @@ class SerPacas(object):
 			self.prox_folioN = self.actual_folio[0] + 1
 			self.varProPStr.set('Proximo folio: ' + str(self.actual_folio[0] + 1))
 			self.varUltPStr.set('Ultimo folio: ' + str(self.actual_folio[0]) + ' a las ' + ahora)
+		self.deletePDF()
 		self.proxL.after(1000, self.loopPacas)
 
 	def ConsultaDB(self, consulta):
@@ -102,8 +104,18 @@ class SerPacas(object):
 		        cur.close()
 		    if (conn):
 		        conn.close()
-			print ('Consulta exitosa **' + consulta + '**')
+			#print ('Consulta exitosa **' + consulta + '**')
 			return resultado
 
 	def cerrar(self):
 		print "No" 
+
+	def deletePDF(self):
+		dimeDia = datetime.now()
+		if dimeDia.day == self.manana:
+			print ('Eliminando archivos PDF del día :' + str(dimeDia.day - 1))
+			# Eliminar archivos
+			pZ = subprocess.Popen('del /f c:\Users\{}\Downloads\*Ticket_de_Pacas*.pdf'.format(self.userM), 
+                                stdout=subprocess.PIPE, 
+                                shell=True)
+			self.manana = dimeDia.day + 1
