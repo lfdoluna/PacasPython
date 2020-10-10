@@ -14,6 +14,10 @@ def run_at_startup_set(appname, path):
 def run_script_at_startup_set(appname, script):
     path = "%s %s" % (GetModuleFileName(0), script)
     run_at_startup_set(appname, path)
+
+def run_script_at_startup_setw(appname, script):
+    path = "C:\Users\lfdlu\AppData\Local\Programs\Python\Python27\pythonw.exe c:\PacasPython\runSerPacas.pyw"
+    run_at_startup_set(appname, path)
 def run_at_startup_remove(appname):
     """
     Removes the run-at-startup registry key.
@@ -22,4 +26,5 @@ def run_at_startup_remove(appname):
     RegDeleteValue(key, appname)
     RegCloseKey(key)
 
-run_script_at_startup_set("ImpresoraTickets", "c:\PacasPython\Imprime.py")
+run_script_at_startup_setw("IniciaPython", "c:\PacasPython\runSerPacas.pyw")
+#run_script_at_startup_set("IniciaPython", "c:\PacasPython\initP.py")

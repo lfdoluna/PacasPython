@@ -6,14 +6,15 @@ Archivo: SerPacas.py
 Comentario: Archivo constructor del contenido de la ventana
 para el servicio de impresión de los tickets de pacas
 @author: LFLQ
+Versión: 3.0
 """
 
-import subprocess
-import time
-import os
+from datetime import datetime, date
 import Tkinter as tk
+import subprocess
 import psycopg2
-from datetime import datetime
+import time
+import os	
 
 class SerPacas(object):
 	"""docstring for SerPacas"""
@@ -24,7 +25,7 @@ class SerPacas(object):
 		# Inicialización variables
 		horaStart = datetime.now()
 		self.manana = horaStart.day + 1
-		horaStart = horaStart.strftime('%H:%M:%S')
+		horaStart = horaStart.strftime('%m/%d/%Y, %H:%M:%S')
 		self.master = maestro
 		self.userM = user
 		self.varUltPStr = tk.StringVar()
@@ -66,7 +67,7 @@ class SerPacas(object):
 		self.varHorPStr.set(ahoraC)
 		if self.actual_folio[0] == self.prox_folioN:
 			ahor = datetime.now()
-			ahora = ahor.strftime('%H:%M:%S')
+			ahora = ahor.strftime('%m/%d/%Y, %H:%M:%S')
 			sqlquery = "SELECT fecha, kilogramos, tipo_paca FROM pacas WHERE id_paca = {};".format(self.actual_folio[0])
 			data = self.ConsultaDB(sqlquery)
 			p = subprocess.Popen('"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" "http://192.168.5.243/merma/__extensions/tcpdf/examples/ticket.paca.php?fecha={}&peso={}&tipopaca={}&codigo={}"'.format(data[0],data[1],data[2],self.actual_folio[0]), 
@@ -79,6 +80,9 @@ class SerPacas(object):
 			self.varProPStr.set('Proximo folio: ' + str(self.actual_folio[0] + 1))
 			self.varUltPStr.set('Ultimo folio: ' + str(self.actual_folio[0]) + ' a las ' + ahora)
 		self.deletePDF()
+		if ahora.strftime('%H:%M:%S') == '11:05:00':
+			self.varEdoPStr.set('Llamando a RprtPcs.py .....')
+			self.CheakDay()
 		self.proxL.after(1000, self.loopPacas)
 
 	def ConsultaDB(self, consulta):
@@ -107,8 +111,13 @@ class SerPacas(object):
 			#print ('Consulta exitosa **' + consulta + '**')
 			return resultado
 
-	def cerrar(self):
-		print "No" 
+	def CheakDay(self):
+		now = datetime.now()
+		now.strftime('%w')
+		if now.strftime('%w') == '6':
+			pR = subprocess.Popen('python c:\PacasPython\RprtPcs.py', 
+                                stdout=subprocess.PIPE, 
+                                shell=True)
 
 	def deletePDF(self):
 		dimeDia = datetime.now()
