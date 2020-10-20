@@ -5,12 +5,18 @@ Created on Fri Oct  9 15:33:05 2020
 Archivo: RprtPcs.py
 Comentarios: Script para la generación de un reporte en excel
 para la entradas de pacas
+Versión: 1.5
 @author: LFLQ
 """
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
 from datetime import datetime, date
-import calendar
-import psycopg2
+from email import encoders
 import pandas as pd
+import psycopg2
+import calendar
+import smtplib
 
 def current_date_format(date1, date2):
 	d1 = date(date1[0], date1[1], date1[2])
@@ -24,6 +30,30 @@ def addZero(number):
 	if number <= 9:
 		number = '0' + str(number)
 	return number
+
+def sendMail(ruta_adjunto, nombre_adjunto, fecha):
+	msg = MIMEMultipart()
+	message = "Reporte de entradas de pacas de {}".format(fecha)
+	password = 'archimex96'
+	#destinatarios = ['a.armendariz@archimex.com.mx', 'racevedo@archimex.com.mx']
+	destinatarios = ['lfdo.luna@gmail.com', 'lflunaq@gmail.com']
+	msg['From'] = 'lfdo.luna@archimex.com.mx'
+	msg['To'] = ", ".join(destinatarios)
+	msg['Subject'] = "Reporte de entradas de pacas"
+	msg.attach(MIMEText(message, 'plain'))
+
+	archivo_adjunto = open(ruta_adjunto, 'rb')
+	adjunto_MIME = MIMEBase('application', 'octet-stream')
+	adjunto_MIME.set_payload((archivo_adjunto).read())
+	encoders.encode_base64(adjunto_MIME)
+	adjunto_MIME.add_header('Content-Disposition', "attachment; filename= %s" % nombre_adjunto)
+	msg.attach(adjunto_MIME)
+
+	server = smtplib.SMTP('smtp.gmail.com: 587')
+	server.starttls()
+	server.login(msg['From'], password)
+	server.sendmail(msg['From'], msg['To'], msg.as_string())
+	server.quit()
 
 connstr = "host=192.168.5.243 port=5432 user=postgres password=bi dbname=merma"
 conn = psycopg2.connect(connstr)
@@ -58,7 +88,9 @@ fecha1.append(dia_desde)
 fecha2.append(now.year)
 fecha2.append(mes_hasta)
 fecha2.append(dia_hasta)
-nomArch = 'c:\PacasPython\Reporte_Entradas_{}.xlsx'.format(current_date_format(fecha1, fecha2))
-print nomArch
-dataFrame.to_excel(nomArch, index = False)
+dirArch = 'c:\PacasPython\Reporte_Entradas_{}.xlsx'.format(current_date_format(fecha1, fecha2))
+nomArch = 'Reporte_Entradas_{}.xlsx'.format(current_date_format(fecha1, fecha2))
+print dirArch
+dataFrame.to_excel(dirArch, index = False)
+sendMail(dirArch, nomArch, current_date_format(fecha1, fecha2))
 conn.close()
