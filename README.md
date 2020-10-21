@@ -18,6 +18,7 @@ de al momento de instalar con la función **PIP**, no encontremos el mismo error
 ```
 pip install psycopg2
 pip install pywin32
+pip install pandas
 ```
 3. Asegurarse de tener instalado *Chrome* y *Acrobat Reader*(Versión Estandar)
 
