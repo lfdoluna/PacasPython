@@ -136,13 +136,13 @@ class SerPacas(object):
 
 	def CheakDay(self):
 		now = datetime.now()
-		if (now.strftime('%w, %H:%M') == '5, 09:25') and (int(now.strftime('%U'))%2 != 0) and (self.flagEdoRprtPcs == False):
+		if (now.strftime('%w, %H:%M') == '5, 09:00') and (int(now.strftime('%U'))%2 != 0) and (self.flagEdoRprtPcs == False):
 			self.varEdoPStr.set('Llamando a RprtPcs.py .....')
 			pR = subprocess.Popen('python c:\PacasPython\RprtPcs.py', 
 	                              stdout=subprocess.PIPE, 
 	                              shell=True)
 			self.flagEdoRprtPcs = True
-		elif (now.strftime('%w, %H:%M') == '5, 09:26') and (self.flagEdoRprtPcs == True):
+		elif (now.strftime('%w, %H:%M') == '5, 09:01') and (self.flagEdoRprtPcs == True):
 			self.flagEdoRprtPcs = False
 
 	def deletePDF(self):
