@@ -28,6 +28,7 @@ class SerPacas(object):
 		self.prox_folio = 0
 		self.prox_folioN= 1
 		self.flagEdo = True
+		self.flagEdoRprtPcs = False
 		self.manana = horaStart.day + 1
 		horaStart = horaStart.strftime('%m/%d/%Y, %H:%M:%S')
 		self.master = maestro
@@ -90,10 +91,9 @@ class SerPacas(object):
 				self.varProPStr.set('Proximo folio: ' + str(self.actual_folio[0] + 1))
 				self.varUltPStr.set('Ultimo folio: ' + str(self.actual_folio[0]) + ' a las ' + ahoraD)
 			self.deletePDF()
-			if ahora.strftime('%H:%M:%S') == '11:05:00':
-				self.varEdoPStr.set('Llamando a RprtPcs.py .....')
-				self.CheakDay()
+			self.CheakDay()
 			if self.flagEdo == False:
+				self.flagEdo = True
 				self.varEdoPStr.set('Conexión exitosa')
 				self.actual_folio = self.ConsultaDB(sqlquery)
 				self.prox_folioN = self.actual_folio[0] + 1
@@ -136,11 +136,14 @@ class SerPacas(object):
 
 	def CheakDay(self):
 		now = datetime.now()
-		now.strftime('%w')
-		if now.strftime('%w') == '6':
+		if (now.strftime('%w, %H:%M') == '5, 09:25') and (int(now.strftime('%U'))%2 != 0) and (self.flagEdoRprtPcs == False):
+			self.varEdoPStr.set('Llamando a RprtPcs.py .....')
 			pR = subprocess.Popen('python c:\PacasPython\RprtPcs.py', 
-                                stdout=subprocess.PIPE, 
-                                shell=True)
+	                              stdout=subprocess.PIPE, 
+	                              shell=True)
+			self.flagEdoRprtPcs = True
+		elif (now.strftime('%w, %H:%M') == '5, 09:26') and (self.flagEdoRprtPcs == True):
+			self.flagEdoRprtPcs = False
 
 	def deletePDF(self):
 		dimeDia = datetime.now()
