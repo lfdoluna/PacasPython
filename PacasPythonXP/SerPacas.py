@@ -81,7 +81,7 @@ class SerPacas(object):
 				ahoraD = ahor.strftime('%m/%d/%Y, %H:%M:%S')
 				sqlquery = "SELECT fecha, kilogramos, tipo_paca FROM pacas WHERE id_paca = {};".format(self.actual_folio[0])
 				data = self.ConsultaDB(sqlquery)
-				p = subprocess.Popen('C:\PacasPython\wget.exe -O C:\Users\{}\Downloads\Ticket_de_Pacas{}.pdf -c "http://192.168.5.243/merma/__extensions/tcpdf/examples/ticket.paca.php?fecha={}&peso={}&tipopaca={}&codigo={}"'.format(self.userM,self.actual_folio[0],data[0],data[1],data[2],self.actual_folio[0]), 
+				p = subprocess.Popen('C:\PacasPython\wget.exe -O C:\PacasPython\Ticket_de_Pacas{}.pdf -c "http://192.168.5.243/merma/__extensions/tcpdf/examples/ticket.paca.php?fecha={}&peso={}&tipopaca={}&codigo={}"'.format(self.actual_folio[0],data[0],data[1],data[2],self.actual_folio[0]), 
 	                                stdout=subprocess.PIPE, 
 	                                shell=True)
 				self.varEdoPStr.set('Llamando a printerPacas....')
@@ -150,7 +150,7 @@ class SerPacas(object):
 		if dimeDia.day == self.manana:
 			print ('Eliminando archivos PDF del día :' + str(dimeDia.day - 1))
 			# Eliminar archivos
-			pZ = subprocess.Popen('del /f c:\Users\{}\Downloads\*Ticket_de_Pacas*.pdf'.format(self.userM), 
+			pZ = subprocess.Popen('del /f C:\PacasPython\*Ticket_de_Pacas*.pdf', 
                                 stdout=subprocess.PIPE, 
                                 shell=True)
 			self.manana = dimeDia.day + 1
