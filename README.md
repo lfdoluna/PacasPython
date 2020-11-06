@@ -6,6 +6,12 @@ Scripst para la impresión de tickets generados por la báscula de merma de form
 Debe asegurarse de instalar Python contenga la función **PIP**, esta es necesaria para instalar las librerias necesarias de Python
 
 **************************************************
+**Preparando la instalación**
+1. Asegurese de descargar y copiar todo el código en el directorio raiz de su disco duro, debe quedar algo asi:
+
+`C:\PacasPython\`
+
+1.1 En caso de utilizarlo en el sistema de Windows XP debe asegurarse que la carpeta **PacasPythonXP** quede en el directorio raíz 
 
 **Instalación librerias y programas:**
 
@@ -16,11 +22,16 @@ de al momento de instalar con la función **PIP**, no encontremos el mismo error
 
 2. Abrir una ventana *CMD* y ejecutamos las siguientes lineas de comando:
 ```
-pip install psycopg2
-pip install pywin32
-pip install pandas
+pip install -r requirements.txt
 ```
-3. Asegurarse de tener instalado *Chrome* y *Acrobat Reader*(Versión Estandar)
+
+2.1 En caso de tener desabilitado el internet ejecute el siguiente comando:
+
+`pip install -r requirementsOFFLINE.txt`
+
+3. Asegurarse de tener instalado *Chrome*, *Acrobat Reader*(Versión Estandar) y *los controladores de la impresora*. En este caso se ocupo la Brother QL-800 por lo que anexamos el link de descarga. También dentro de la carpeta **LibreriasPacasPython(offline)** se dejaron los instaladores de los *controladores de la impresora*, como el instalador de *Acrobat Reader*
+
+https://support.brother.com/g/b/downloadend.aspx?c=mx&lang=es&prod=lpql800eus&os=10011&dlid=dlfp100846_000&flang=201&type3=347
 
 **Instalación Scritps:**
 
