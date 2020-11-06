@@ -27,11 +27,15 @@ class runSerPacas(object):
 		self.ventanaPass = tk.Toplevel(self.list_obj[self.num])
 		self.ventanaPass.title('Inserte la contraseña')
 		self.ventanaPass.geometry("150x100")
+		self.ventanaPass.resizable(0,0)
 		tk.Label(self.ventanaPass, text="Contraseña * ").pack()
 		self.entrada_login_clave = tk.Entry(self.ventanaPass, textvariable=self.verifica_clave, show= '*')
 		self.entrada_login_clave.pack()
+		self.entrada_login_clave.focus()
 		tk.Label(self.ventanaPass, text="").pack()
 		tk.Button(self.ventanaPass, text="Acceder", width=10, height=1, command = self.verifica_login).pack()
+		self.ventanaPass.bind('<Return>', self.verifica_loginE)
+		self.ventanaPass.focus_set()
 
 	def verifica_login(self):
 		claveUser = self.verifica_clave.get()
@@ -50,6 +54,26 @@ class runSerPacas(object):
 				self.ventanaPass.destroy()
 			else:
 				self.ventanaPass.deiconify()
+				self.entrada_login_clave.focus()
+
+	def verifica_loginE(self, event):
+		claveUser = self.verifica_clave.get()
+		print (claveUser + ' ' + self.password)
+		self.entrada_login_clave.delete(0, tk.END)
+		if self.password in claveUser:
+			tkMessageBox.showinfo(message="¡Exito!", title="Ingreso correcto")
+			print 'hola'
+			self.list_obj[self.num].destroy()
+			self.list_obj.append(1)
+			self.num += 1
+			self.inicio()
+		else:
+			flagC = tkMessageBox.askretrycancel(message="Contraseña incorrecta, ¿Desea reintentar?", title="Error")
+			if flagC == False:
+				self.ventanaPass.destroy()
+			else:
+				self.ventanaPass.deiconify()
+				self.entrada_login_clave.focus()
 
 	def inicio(self):
 		self.list_obj[self.num] = tk.Tk()      # Creamos una instancia widget ventana de Tk

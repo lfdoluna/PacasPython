@@ -13,6 +13,7 @@ import psycopg2
 import getpass
 import time
 
+nomb_impr = 'QL-800_pacas en DESKTOP-M5VJJ89'
 userM = getpass.getuser()
 
 # Postgres
@@ -39,7 +40,7 @@ try:
     
     # Imprime el tiket
     fileP = 'C:\Users\{}\Downloads\Ticket_de_Pacas{}.pdf'.format(userM ,ultima_pacaN)
-    p = subprocess.Popen('"C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"  /n /s /h /t "{}" "QL-800_pacas en DESKTOP-M5VJJ89"'.format(fileP), stdout=subprocess.PIPE, shell=True)
+    p = subprocess.Popen('"C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"  /n /s /h /t "{}" "{}"'.format(fileP, nomb_impr), stdout=subprocess.PIPE, shell=True)
     print '**********************----'
     print (fileP)
     print '**********************----'
