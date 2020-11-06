@@ -1,0 +1,7 @@
+c:\PacasPython\LibreriasPacasPython(offline)\pytz-2020.1-py2.py3-none-any.whl
+c:\PacasPython\LibreriasPacasPython(offline)\six-1.15.0-py2.py3-none-any.whl
+c:\PacasPython\LibreriasPacasPython(offline)\setuptools-41.2.0-py2.py3-none-any.whl
+c:\PacasPython\LibreriasPacasPython(offline)\python_dateutil-2.8.1-py2.py3-none-any.whl
+c:\PacasPython\LibreriasPacasPython(offline)\psycopg2-2.8.6-cp27-cp27m-win32.whl
+c:\PacasPython\LibreriasPacasPython(offline)\numpy-1.16.6-cp27-cp27m-win32.whl
+c:\PacasPython\LibreriasPacasPython(offline)\pandas-0.24.2-cp27-cp27m-win32.whl
