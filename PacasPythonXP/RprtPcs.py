@@ -88,7 +88,7 @@ fecha1.append(dia_desde)
 fecha2.append(now.year)
 fecha2.append(mes_hasta)
 fecha2.append(dia_hasta)
-dirArch = 'c:\PacasPython\Reporte_Entradas_{}.xlsx'.format(current_date_format(fecha1, fecha2))
+dirArch = 'c:\PacasPythonXP\Reporte_Entradas_{}.xlsx'.format(current_date_format(fecha1, fecha2))
 nomArch = 'Reporte_Entradas_{}.xlsx'.format(current_date_format(fecha1, fecha2))
 print dirArch
 dataFrame.to_excel(dirArch, index = False)

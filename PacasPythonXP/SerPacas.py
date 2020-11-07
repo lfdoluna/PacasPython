@@ -38,9 +38,9 @@ class SerPacas(object):
 		self.varEdoPStr = tk.StringVar()
 		self.varHorPStr = tk.StringVar()
 		self.varHorPStr.set(horaStart)
-		sqlquery = "SELECT max(id_paca) AS ultima_paca FROM pacas;"
+		self.sqlquery = "SELECT max(id_paca) AS ultima_paca FROM pacas;"
 		try:
-			self.prox_folio = self.ConsultaDB(sqlquery)
+			self.prox_folio = self.ConsultaDB(self.sqlquery)
 			self.varUltPStr.set('Ultimo folio: ' + str(self.prox_folio[0]) + ' a las ' + horaStart)
 			self.varProPStr.set('Proximo folio: ' + str(self.prox_folio[0] + 1))
 			self.varEdoPStr.set('No cierre la ventana')
@@ -72,21 +72,23 @@ class SerPacas(object):
 		try:
 			ahora = datetime.now()
 			ahoraC = ahora.strftime('%H:%M:%S')
-			sqlquery = "SELECT max(id_paca) AS ultima_paca FROM pacas;"
-			self.actual_folio = self.ConsultaDB(sqlquery)
+			self.actual_folio = self.ConsultaDB(self.sqlquery)
 			#print self.actual_folio[0]
 			self.varHorPStr.set(ahoraC)
 			if self.actual_folio[0] == self.prox_folioN:
-				ahor = datetime.now()
-				ahoraD = ahor.strftime('%m/%d/%Y, %H:%M:%S')
-				sqlquery = "SELECT fecha, kilogramos, tipo_paca FROM pacas WHERE id_paca = {};".format(self.actual_folio[0])
-				data = self.ConsultaDB(sqlquery)
-				p = subprocess.Popen('C:\PacasPython\wget.exe -O C:\PacasPython\Ticket_de_Pacas{}.pdf -c "http://192.168.5.243/merma/__extensions/tcpdf/examples/ticket.paca.php?fecha={}&peso={}&tipopaca={}&codigo={}"'.format(self.actual_folio[0],data[0],data[1],data[2],self.actual_folio[0]), 
-	                                stdout=subprocess.PIPE, 
-	                                shell=True)
-				self.varEdoPStr.set('Llamando a printerPacas....')
-				print 'Llamando a printerPacas....'
-				subprocess.call('python c:\PacasPython\printerPacas.py')
+				queryTipo_Paca = "SELECT tipo_paca FROM pacas where id_paca = {};".format(self.actual_folio[0])
+				self.tipo_paca = self.ConsultaDB(queryTipo_Paca)
+				if self.tipo_paca[0] != 'GRANEL':
+					ahor = datetime.now()
+					ahoraD = ahor.strftime('%m/%d/%Y, %H:%M:%S')
+					self.sqlqueryData = "SELECT fecha, kilogramos, tipo_paca FROM pacas WHERE id_paca = {};".format(self.actual_folio[0])
+					data = self.ConsultaDB(self.sqlqueryData)
+					p = subprocess.Popen('C:\PacasPythonXP\wget.exe -O C:\Users\{}\Downloads\Ticket_de_Pacas{}.pdf -c "http://192.168.5.243/merma/__extensions/tcpdf/examples/ticket.paca.php?fecha={}&peso={}&tipopaca={}&codigo={}"'.format(self.userM,self.actual_folio[0],data[0],data[1],data[2],self.actual_folio[0]), 
+										stdout=subprocess.PIPE, 
+										shell=True)
+					self.varEdoPStr.set('Llamando a printerPacas....')
+					print 'Llamando a printerPacas....'
+					subprocess.call('python c:\PacasPythonXP\printerPacas.py')
 				self.prox_folioN = self.actual_folio[0] + 1
 				self.varProPStr.set('Proximo folio: ' + str(self.actual_folio[0] + 1))
 				self.varUltPStr.set('Ultimo folio: ' + str(self.actual_folio[0]) + ' a las ' + ahoraD)
@@ -138,7 +140,7 @@ class SerPacas(object):
 		now = datetime.now()
 		if (now.strftime('%w, %H:%M') == '5, 09:00') and (int(now.strftime('%U'))%2 != 0) and (self.flagEdoRprtPcs == False):
 			self.varEdoPStr.set('Llamando a RprtPcs.py .....')
-			pR = subprocess.Popen('python c:\PacasPython\RprtPcs.py', 
+			pR = subprocess.Popen('python c:\PacasPythonXP\RprtPcs.py', 
 	                              stdout=subprocess.PIPE, 
 	                              shell=True)
 			self.flagEdoRprtPcs = True
@@ -150,7 +152,7 @@ class SerPacas(object):
 		if dimeDia.day == self.manana:
 			print ('Eliminando archivos PDF del día :' + str(dimeDia.day - 1))
 			# Eliminar archivos
-			pZ = subprocess.Popen('del /f C:\PacasPython\*Ticket_de_Pacas*.pdf', 
+			pZ = subprocess.Popen('del /f C:\PacasPythonXP\*Ticket_de_Pacas*.pdf', 
                                 stdout=subprocess.PIPE, 
                                 shell=True)
 			self.manana = dimeDia.day + 1

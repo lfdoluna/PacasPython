@@ -43,7 +43,7 @@ class runSerPacas(object):
 		self.entrada_login_clave.delete(0, tk.END)
 		if self.password in claveUser:
 			tkMessageBox.showinfo(message="¡Exito!", title="Ingreso correcto")
-			print 'hola'
+			print('hola')
 			self.list_obj[self.num].destroy()
 			self.list_obj.append(1)
 			self.num += 1
@@ -62,7 +62,7 @@ class runSerPacas(object):
 		self.entrada_login_clave.delete(0, tk.END)
 		if self.password in claveUser:
 			tkMessageBox.showinfo(message="¡Exito!", title="Ingreso correcto")
-			print 'hola'
+			print('hola')
 			self.list_obj[self.num].destroy()
 			self.list_obj.append(1)
 			self.num += 1

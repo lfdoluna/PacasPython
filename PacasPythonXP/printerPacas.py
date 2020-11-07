@@ -38,7 +38,7 @@ try:
     time.sleep(3)
     
     # Imprime el tiket
-    fileP = 'C:\PacasPython\Ticket_de_Pacas{}.pdf'.format(ultima_pacaN)
+    fileP = 'C:\PacasPythonXP\Ticket_de_Pacas{}.pdf'.format(ultima_pacaN)
     p = subprocess.Popen('"C:\Program Files\Adobe\Reader 11.0\Reader\AcroRd32.exe"  /n /s /h /t "{}" "Brother QL-800"'.format(fileP), stdout=subprocess.PIPE, shell=True)
     print '**********************----'
     print (fileP)
