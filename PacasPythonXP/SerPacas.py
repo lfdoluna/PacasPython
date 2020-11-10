@@ -45,6 +45,7 @@ class SerPacas(object):
 			self.varProPStr.set('Proximo folio: ' + str(self.prox_folio[0] + 1))
 			self.varEdoPStr.set('No cierre la ventana')
 			self.prox_folioN = self.prox_folio[0] + 1
+			self.folio_anterior = self.prox_folio[0]
 		except Exception as e:
 			print e
 			self.varUltPStr.set('Ultimo folio: ' + 'Sin datos' + ' a las ' + horaStart)
@@ -75,10 +76,11 @@ class SerPacas(object):
 			self.actual_folio = self.ConsultaDB(self.sqlquery)
 			#print self.actual_folio[0]
 			self.varHorPStr.set(ahoraC)
-			if self.actual_folio[0] == self.prox_folioN:
+			if self.actual_folio[0] == self.prox_folioN or self.actual_folio[0] != self.folio_anterior:
 				queryTipo_Paca = "SELECT tipo_paca FROM pacas where id_paca = {};".format(self.actual_folio[0])
 				self.tipo_paca = self.ConsultaDB(queryTipo_Paca)
-				if self.tipo_paca[0] != 'GRANEL':
+				fileName = r"C:\Users\{}\Downloads\Ticket_de_Pacas{}.pdf".format(self.actual_folio[0])
+				if self.tipo_paca[0] != 'GRANEL' and not(os.path.isfile(fileName)):
 					ahor = datetime.now()
 					ahoraD = ahor.strftime('%m/%d/%Y, %H:%M:%S')
 					self.sqlqueryData = "SELECT fecha, kilogramos, tipo_paca FROM pacas WHERE id_paca = {};".format(self.actual_folio[0])
@@ -90,6 +92,7 @@ class SerPacas(object):
 					print 'Llamando a printerPacas....'
 					subprocess.call('python c:\PacasPythonXP\printerPacas.py')
 				self.prox_folioN = self.actual_folio[0] + 1
+				self.folio_anterior = self.actual_folio[0]
 				self.varProPStr.set('Proximo folio: ' + str(self.actual_folio[0] + 1))
 				self.varUltPStr.set('Ultimo folio: ' + str(self.actual_folio[0]) + ' a las ' + ahoraD)
 			self.deletePDF()
@@ -101,8 +104,9 @@ class SerPacas(object):
 				self.prox_folioN = self.actual_folio[0] + 1
 				self.varProPStr.set('Proximo folio: ' + str(self.actual_folio[0] + 1))
 				self.varUltPStr.set('Ultimo folio: ' + str(self.actual_folio[0]) + ' a las ' + ahoraC)
-		except:
-			print ('Error inesperado: ' , sys.exc_info()[0])
+		except Exception as e:
+			self.varEdoPStr.set('Error inesperado dentro loopPacas')
+			print ('Error inesperado dentro loopPacas: ', e)
 		finally:
 			self.proxL.after(1000, self.loopPacas)
 
@@ -121,7 +125,8 @@ class SerPacas(object):
 			resultado = cur.fetchone()
 
 		except Exception as e:
-			self.varEdoPStr.set("Error de base de datos")
+			self.varEdoPStr.set("Error en la consulta de la base de datos")
+			print("Error en la consulta de la base de datos", e)
 			self.flagEdo = False
 			pass
 
