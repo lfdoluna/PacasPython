@@ -83,7 +83,7 @@ class SerPacas(object):
 					ahoraD = ahor.strftime('%m/%d/%Y, %H:%M:%S')
 					self.sqlqueryData = "SELECT fecha, kilogramos, tipo_paca FROM pacas WHERE id_paca = {};".format(self.actual_folio[0])
 					data = self.ConsultaDB(self.sqlqueryData)
-					p = subprocess.Popen('C:\PacasPythonXP\wget.exe -O C:\Users\{}\Downloads\Ticket_de_Pacas{}.pdf -c "http://192.168.5.243/merma/__extensions/tcpdf/examples/ticket.paca.php?fecha={}&peso={}&tipopaca={}&codigo={}"'.format(self.userM,self.actual_folio[0],data[0],data[1],data[2],self.actual_folio[0]), 
+					p = subprocess.Popen('C:\PacasPythonXP\wget.exe -O C:\PacasPythonXP\Ticket_de_Pacas{}.pdf -c "http://192.168.5.243/merma/__extensions/tcpdf/examples/ticket.paca.php?fecha={}&peso={}&tipopaca={}&codigo={}"'.format(self.actual_folio[0],data[0],data[1],data[2],self.actual_folio[0]), 
 										stdout=subprocess.PIPE, 
 										shell=True)
 					self.varEdoPStr.set('Llamando a printerPacas....')
