@@ -74,12 +74,12 @@ class SerPacas(object):
 			ahora = datetime.now()
 			ahoraC = ahora.strftime('%H:%M:%S')
 			self.actual_folio = self.ConsultaDB(self.sqlquery)
-			#print self.actual_folio[0]
+			#print self.folio_anterior
 			self.varHorPStr.set(ahoraC)
 			if self.actual_folio[0] == self.prox_folioN or self.actual_folio[0] != self.folio_anterior:
 				queryTipo_Paca = "SELECT tipo_paca FROM pacas where id_paca = {};".format(self.actual_folio[0])
 				self.tipo_paca = self.ConsultaDB(queryTipo_Paca)
-				fileName = r"C:\Users\{}\Downloads\Ticket_de_Pacas{}.pdf".format(self.actual_folio[0])
+				fileName = "C:\PacasPythonXP\Ticket_de_Pacas{}.pdf".format(self.actual_folio[0])
 				if self.tipo_paca[0] != 'GRANEL' and not(os.path.isfile(fileName)):
 					ahor = datetime.now()
 					ahoraD = ahor.strftime('%m/%d/%Y, %H:%M:%S')
