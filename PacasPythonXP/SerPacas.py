@@ -82,7 +82,6 @@ class SerPacas(object):
 				fileName = "C:\PacasPythonXP\Ticket_de_Pacas{}.pdf".format(self.actual_folio[0])
 				if self.tipo_paca[0] != 'GRANEL' and not(os.path.isfile(fileName)):
 					ahor = datetime.now()
-					ahoraD = ahor.strftime('%m/%d/%Y, %H:%M:%S')
 					self.sqlqueryData = "SELECT fecha, kilogramos, tipo_paca FROM pacas WHERE id_paca = {};".format(self.actual_folio[0])
 					data = self.ConsultaDB(self.sqlqueryData)
 					p = subprocess.Popen('C:\PacasPythonXP\wget.exe -O C:\PacasPythonXP\Ticket_de_Pacas{}.pdf -c "http://192.168.5.243/merma/__extensions/tcpdf/examples/ticket.paca.php?fecha={}&peso={}&tipopaca={}&codigo={}"'.format(self.actual_folio[0],data[0],data[1],data[2],self.actual_folio[0]), 
@@ -94,6 +93,7 @@ class SerPacas(object):
 				self.prox_folioN = self.actual_folio[0] + 1
 				self.folio_anterior = self.actual_folio[0]
 				self.varProPStr.set('Proximo folio: ' + str(self.actual_folio[0] + 1))
+				ahoraD = ahor.strftime('%m/%d/%Y, %H:%M:%S')
 				self.varUltPStr.set('Ultimo folio: ' + str(self.actual_folio[0]) + ' a las ' + ahoraD)
 			self.deletePDF()
 			self.CheakDay()
