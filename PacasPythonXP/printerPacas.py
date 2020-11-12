@@ -38,11 +38,11 @@ try:
     time.sleep(3)
     
     # Imprime el tiket
-    fileP = 'C:\PacasPythonXP\Ticket_de_Pacas{}.pdf'.format(ultima_pacaN)
-    p = subprocess.Popen('"C:\Program Files\Adobe\Reader 11.0\Reader\AcroRd32.exe"  /n /s /h /t "{}" "Brother QL-800"'.format(fileP), stdout=subprocess.PIPE, shell=True)
-    print '**********************----'
+    fileP = r'C:\PacasPythonXP\Resources\Ticket_de_Pacas{0}.pdf'.format(ultima_pacaN)
+    subprocess.Popen(r'"C:\Program Files\Adobe\Reader 11.0\Reader\AcroRd32.exe"  /n /s /h /t "{0}" "Brother QL-800"'.format(fileP), stdout=subprocess.PIPE, shell=True)
+    print('**********************----')
     print (fileP)
-    print '**********************----'
+    print('**********************----')
 
 except:
     print("Error de base de datos")
@@ -50,9 +50,9 @@ except:
 finally:
     if (cur):
         cur.close()
-        print "Cursor cerrado"
+        print("Cursor cerrado")
     if (conn):
         conn.close()
         print("The SQLite connection is closed at " + time.ctime())
-        print '\n******************************************************----'
+        print('\n******************************************************----')
         time.sleep(5)
