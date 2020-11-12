@@ -89,7 +89,7 @@ class SerPacas(object):
 		self.loopPacas()
 
 	def loopPacas(self):
-		#try:
+		try:
 			ahora = datetime.now()
 			self.ahoraC = ahora.strftime('%H:%M:%S')
 			self.actual_folio = self.ConsultaDB(self.sqlquery)
@@ -130,13 +130,12 @@ class SerPacas(object):
 				self.prox_folioN = self.actual_folio[0] + 1
 				self.varProPStr.set('Proximo folio: ' + str(self.actual_folio[0] + 1))
 				self.varUltPStr.set('Ultimo folio: ' + str(self.actual_folio[0]) + ' a las ' + self.ahoraC)
+		except Exception as e:
+			self.varEdoPStr.set('Error inesperado dentro loopPacas')
+			print ('Error inesperado dentro loopPacas: ', e)
+			self.WrReLOG(self.ahoraC + str('Error inesperado dentro loopPacas: '+ e) + '\n', self.dirLOGimpr, self.dirLOGimpr)
+		finally:
 			self.proxL.after(1000, self.loopPacas)
-		#except Exception as e:
-		#	self.varEdoPStr.set('Error inesperado dentro loopPacas')
-		#	print ('Error inesperado dentro loopPacas: ', e)
-		#self.WrReLOG(self.ahoraC + str('Error inesperado dentro loopPacas: '+ e) + '\n', self.dirLOGimpr, self.dirLOGimpr)
-		#finally:
-		#	self.proxL.after(1000, self.loopPacas)
 
 	def ConsultaDB(self, consulta):
 		'''
