@@ -9,13 +9,19 @@ de pacas
 """
 
 from SerPacas import *
-import Tkinter as tk
-import tkMessageBox
+try:
+	import Tkinter as tk
+	import tkMessageBox
+except Exception as e:
+	import tkinter as tk
+	from tkinter import messagebox as tkMessageBox
 import getpass
 
 class runSerPacas(object):
 	"""docstring for runSerPacas"""
 	def __init__(self):
+		self.AR_prog = r'C:\Program Files\Adobe\Reader 11.0\Reader\AcroRd32.exe'
+		self.Impresora = 'Brother QL-800'
 		self.usuarioMaquina = getpass.getuser()
 		self.password = 'ArchiPass'
 		self.list_obj = []
@@ -81,7 +87,7 @@ class runSerPacas(object):
 		self.verifica_clave = tk.StringVar()
 		self.list_obj[self.num].geometry('270x200')
 		self.list_obj[self.num].resizable(0,0)
-		app = SerPacas(self.list_obj[self.num], self.usuarioMaquina)
+		SerPacas(self.list_obj[self.num], self.usuarioMaquina, self.AR_prog, self.Impresora)
 		self.list_obj[self.num].protocol("WM_DELETE_WINDOW", self.cerrar)
 		self.list_obj[self.num].mainloop()
 
