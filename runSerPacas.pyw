@@ -20,7 +20,7 @@ import getpass
 class runSerPacas(object):
 	"""docstring for runSerPacas"""
 	def __init__(self):
-		self.AR_prog = r'C:\Program Files\Adobe\Reader 11.0\Reader\AcroRd32.exe'
+		self.AR_prog = r'C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe'
 		self.Impresora = 'Brother QL-800'
 		self.usuarioMaquina = getpass.getuser()
 		self.password = 'ArchiPass'

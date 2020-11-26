@@ -10,6 +10,8 @@ Versión: 3.0
 """
 
 from datetime import datetime, date
+from subprocess import check_output
+from SerFctr import *
 try:
 	import Tkinter as tk
 except Exception as e:
@@ -29,15 +31,16 @@ class SerPacas(object):
 		self.marcoM = maestro
 
 		# Inicialización variables
-		self.dirRAIZ = r'C:\PacasPythonXP'
+		self.dirRAIZ = r'C:\PacasPython'
 		self.dirLOGimpr = r'{0}\Resources\ImprPcs.log'.format(self.dirRAIZ)
 		self.dirLOGpacs = r'{0}\Resources\Pacas.log'.format(self.dirRAIZ)
-		if (os.path.isfile(self.dirLOGimpr)) and (os.path.isfile(self.dirLOGpacs)):
+		if os.path.isfile(self.dirLOGimpr):
 			self.banLOGimpr = True
+		if os.path.isfile(self.dirLOGpacs):
 			self.banLOGpacs = True
-		elif not(os.path.isfile(self.dirLOGpacs)):
+		if not(os.path.isfile(self.dirLOGpacs)):
 			self.banLOGpacs = False
-		elif not(os.path.isfile(self.dirLOGimpr)):
+		if not(os.path.isfile(self.dirLOGimpr)):
 			self.banLOGimpr = False
 		self.progAR = instADR
 		self.nomIMP = nomImpre
@@ -95,12 +98,12 @@ class SerPacas(object):
 
 	def loopPacas(self):
 		try:
-			ahora = datetime.now()
-			self.ahoraC = ahora.strftime('%H:%M:%S')
+			self.ahora = datetime.now()
+			self.ahoraC = self.ahora.strftime('%H:%M:%S')
 			self.actual_folio = self.ConsultaDB(self.sqlquery)
 			#print self.folio_anterior
 			self.varHorPStr.set(self.ahoraC)
-			if self.actual_folio[0] == self.prox_folioN or self.actual_folio[0] != self.folio_anterior:
+			if ((self.actual_folio[0] == self.prox_folioN) or (self.actual_folio[0] != self.folio_anterior)) and False:
 				queryTipo_Paca = "SELECT tipo_paca FROM pacas where id_paca = {0};".format(self.actual_folio[0])
 				self.tipo_paca = self.ConsultaDB(queryTipo_Paca)
 				fileName = r"{1}\Resources\Ticket_de_Pacas{0}.pdf".format(self.actual_folio[0], self.dirRAIZ)
@@ -113,20 +116,20 @@ class SerPacas(object):
 										shell=True)
 					self.varEdoPStr.set('Llamando a printerPacas....')
 					print('Llamando a printerPacas....')
-					self.WrReLOG(self.ahoraC + 'Llamando a printerPacas....' + '\n', self.dirLOGpacs, self.banLOGpacs)
+					self.WrReLOG(self.ahora.strftime('%d/%m/%Y, %H:%M:%S ') + 'Llamando a printerPacas....' + '\n', self.dirLOGpacs, self.banLOGpacs)
 					# Imprime el tiket
 					subprocess.Popen(r'"{1}"  /n /s /h /t "{0}" "{2}"'.format(fileName, self.progAR, self.nomIMP), stdout=subprocess.PIPE, shell=True)
 					print('**********************----')
 					self.WrReLOG('**********************' + '\n', self.dirLOGimpr, self.dirLOGimpr)
 					print (fileName)
-					self.WrReLOG(self.ahoraC + (fileName) + '\n', self.dirLOGimpr, self.dirLOGimpr)
+					self.WrReLOG(self.ahora.strftime('%d/%m/%Y, %H:%M:%S ') + (fileName) + '\n', self.dirLOGimpr, self.dirLOGimpr)
 					print('**********************----')
 				self.prox_folioN = self.actual_folio[0] + 1
 				self.folio_anterior = self.actual_folio[0]
 				self.varProPStr.set('Proximo folio: ' + str(self.actual_folio[0] + 1))
-				ahoraD = ahora.strftime('%m/%d/%Y, %H:%M:%S')
+				ahoraD = self.ahora.strftime('%d/%m/%Y, %H:%M:%S')
 				self.varUltPStr.set('Ultimo folio: ' + str(self.actual_folio[0]) + ' a las ' + ahoraD)
-			self.CheakTime(ahora)
+			self.CheakTime(self.ahora)
 			# Reconexión en caso de haber fallo de internet
 			if self.flagEdo == False:
 				self.flagEdo = True
@@ -138,9 +141,24 @@ class SerPacas(object):
 		except Exception as e:
 			self.varEdoPStr.set('Error inesperado dentro loopPacas')
 			print ('Error inesperado dentro loopPacas: ', e)
-			self.WrReLOG(self.ahoraC + str('Error inesperado dentro loopPacas: '+ e) + '\n', self.dirLOGimpr, self.dirLOGimpr)
+			self.WrReLOG(self.ahora.strftime('%d/%m/%Y, %H:%M:%S ') + 'Error inesperado dentro loopPacas: ' + str(e) + '\n', self.dirLOGimpr, self.dirLOGimpr)
 		finally:
 			self.proxL.after(1000, self.loopPacas)
+
+	def CheakIP(self):
+		"""
+		Método para el checar si la maquina virtual de corrugadora funciona
+		"""
+		try:
+			check_output('ping -w 50 -n 1 192.168.5.170', shell=True)
+			band = True
+		except Exception as e:
+			self.varEdoPStr.set('Máquina virtual desconectada')
+			print ('Máquina virtual desconectada ', e)
+			self.WrReLOG(self.ahora.strftime('%d/%m/%Y, %H:%M:%S ') + str('Máquina virtual desconectada '+ e) + '\n', self.dirLOGimpr, self.dirLOGimpr)
+			band = False
+		finally:
+			return band
 
 	def ConsultaDB(self, consulta):
 		'''
@@ -163,7 +181,7 @@ class SerPacas(object):
 		except Exception as e:
 			self.varEdoPStr.set("Error en la consulta de la base de datos")
 			print("Error en la consulta de la base de datos", e)
-			self.WrReLOG(self.ahoraC + str("Error en la consulta de la base de datos" + e) + '\n', self.dirLOGpacs, self.banLOGpacs)
+			self.WrReLOG(self.ahora.strftime('%d/%m/%Y, %H:%M:%S ') + "Error en la consulta de la base de datos" + str(e) + '\n', self.dirLOGpacs, self.banLOGpacs)
 			self.flagEdo = False
 			pass
 
@@ -194,20 +212,34 @@ class SerPacas(object):
 		# Eliminar archivos
 		elif tiempoDT.day == self.manana:
 			print ('Eliminando archivos PDF del día :' + str(tiempoDT.day - 1))
-			self.WrReLOG(self.ahoraC + str('Eliminando archivos PDF del día :' + str(tiempoDT.day - 1)) + '\n', self.dirLOGpacs, self.banLOGpacs)
+			self.WrReLOG(self.ahora.strftime('%d/%m/%Y, %H:%M:%S ') + str('Eliminando archivos PDF del día :' + str(tiempoDT.day - 1)) + '\n', self.dirLOGpacs, self.banLOGpacs)
 			subprocess.Popen(r'del /f {0}\Resources\*Ticket_de_Pacas*.pdf'.format(self.dirRAIZ), 
                                 stdout=subprocess.PIPE, 
                                 shell=True)
 			self.manana = tiempoDT.day + 1
 		elif int(tiempoDT.strftime('%S'))%15 == 0:
 			pacFAC = self.ConsultaDB(self.QUERYmaxPcCmn)
-			if (pacFAC[0] != self.pacFAC) and self.banFAC == False:
+			# print(str(self.banFAC), self.pacFAC)
+			if ((pacFAC[0] != self.pacFAC) and self.banFAC == False):
+				query0 = 'SELECT camion_id FROM pacas_camion WHERE id_pacas_camion = {0};'.format(pacFAC[0])
+				dat0 = self.ConsultaDB(query0)
+				print(dat0[0])
+				query1 = 'SELECT factura_id FROM factura_pacas_camion WHERE pacas_camion_id = {0};'.format(pacFAC[0])
+				dat1 = self.ConsultaDB(query1)
+				print(dat1[0])
+				datos = [dat0[0], dat1[0]]
 				self.banFAC = True
 				self.ventFAC = tk.Toplevel(self.marcoM)
 				self.ventFAC.title('Servicio de impresión de la prefactura')
 				self.ventFAC.geometry('270x200')
 				self.ventFAC.resizable(0,0)
-			print(str(self.banFAC))
+				self.h = SerFctr(self.ventFAC, self.userM, self.progAR, 'ImpresoraFacturacion', datos)
+			else:
+				if self.h.banFct == False:
+					self.ventFAC.destroy()
+					self.banFAC = False
+					pacFAC = self.ConsultaDB(self.QUERYmaxPcCmn)
+					self.pacFAC = pacFAC[0]
 
 	def WrReLOG(self, txt, dirLOG, bandExis):
 		"""
